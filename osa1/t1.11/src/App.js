@@ -5,15 +5,40 @@ const Statistics = ({ good, neutral, bad }) => {
 
   if (good > 0 || neutral > 0 || bad > 0) {
     return (
-      <div>
-        <h1>statistics</h1>
-        <StatisticLine text="good" value = { good } />
-        <StatisticLine text="neutral" value = { neutral } />
-        <StatisticLine text="bad" value = { bad } />
-        <StatisticLine text="all" value = { good + neutral + bad } />
-        <StatisticLine text="avg" value = { (good + neutral + bad) / 3 } />
-        <StatisticLine text="positive" value = { good / (good + neutral + bad) } />
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Feedback type</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Good</td>
+            <td>{ good }</td>
+          </tr>
+          <tr>
+            <td>Neutral</td>
+            <td>{ neutral }</td>
+          </tr>
+          <tr>
+            <td>Bad</td>
+            <td>{ bad }</td>
+          </tr>
+          <tr>
+            <td>All</td>
+            <td>{ good + neutral + bad }</td>
+          </tr>
+          <tr>
+            <td>Avg</td>
+            <td>{ (good + neutral + bad) / 3 }</td>
+          </tr>
+          <tr>
+            <td>Positive</td>
+            <td>{ good / (good + neutral + bad) }</td>
+          </tr>
+        </tbody>
+      </table>
     )
   }
   return (
