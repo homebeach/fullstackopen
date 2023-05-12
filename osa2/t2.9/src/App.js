@@ -10,6 +10,7 @@ const App = () => {
     { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
 
+  const [filteredPersons, setFilteredPersons] = useState(persons);
 
   const [name, setName] = useState("");
 
@@ -23,6 +24,17 @@ const App = () => {
     setNumber(event.target.value);
   }
 
+  function handleFilterTextInputChange(event) {
+
+    let filterText = event.target.value;
+
+    setFilteredPersons(persons.filter(person => {
+      const name = person.name.toLowerCase();
+      const filterTextLowerCase = filterText.toLowerCase();
+      return name.includes(filterTextLowerCase);
+    }))
+  }
+
   function handleButtonClick(event) {
 
     event.preventDefault(); // Prevents the form submission and page reload
@@ -31,7 +43,9 @@ const App = () => {
     if (isNameAlreadyExists(name)) {
       alert(`${person.name} is already added to phonebook`);
     } else {
-      setPersons([...persons, person]);
+      let newPersons = [...persons, person]
+      setPersons(newPersons);
+      setFilteredPersons(newPersons);
     }
   }
 
@@ -41,7 +55,8 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook this is hello</h2>
+      <h2>Phonebook</h2>
+      filter shown with: <input onChange={handleFilterTextInputChange}/>
       <form>
         <div>
           name: <input value={name} onChange={handleNameInputChange}/>
@@ -54,7 +69,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        {persons.map((person) => (
+        {filteredPersons.map((person) => (
           <li key={person.name}>{person.name} {person.number}</li>
         ))}
       </ul>
