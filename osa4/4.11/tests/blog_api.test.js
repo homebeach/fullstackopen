@@ -86,6 +86,35 @@ test('test adding blog entry', async () => {
   }
 })
 
+test('test likes to be 0', async () => {
+  const blogEntry = {
+    title: 'Test',
+    author: 'Test',
+    url: 'https://test.com/',
+    __v: 0
+  }
+
+  try {
+
+    await api
+      .post('/api/blogs')
+      .send(blogEntry)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    const response = await api.get('/api/blogs')
+    const blogs = response.body
+
+    expect(response.status).toBe(200)
+    expect(blogs).toHaveLength(initialBlogs.length + 1)
+
+    const addedBlog = blogs.find(blog => blog.title === 'Test')
+
+    expect(addedBlog.likes).toBe(0)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 
 afterAll(async () => {
   await mongoose.connection.close()
