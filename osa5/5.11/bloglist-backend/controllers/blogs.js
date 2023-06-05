@@ -49,9 +49,6 @@ blogsRouter.delete('/:id', async (request, response) => {
   try {
     const user = request.user
     const blogId = request.params.id
-
-    console.log("THIS IS DELETE")
-
     const blog = await Blog.findById(blogId)
 
     console.log(blog)
@@ -60,9 +57,7 @@ blogsRouter.delete('/:id', async (request, response) => {
     if (!blog) {
       return response.status(404).json({ error: 'blog not found' })
     }
-    console.log("HERE")
     if (blog.user.toString() === user._id.toString()) {
-      console.log("user")
 
       user.blogs = user.blogs.filter(blog => blog.toString() !== blogId)
       await user.save()
@@ -76,11 +71,6 @@ blogsRouter.delete('/:id', async (request, response) => {
     if (error.name === 'JsonWebTokenError') {
       response.status(400).json({ error: 'token missing or invalid' })
     } else {
-
-      console.log("error.message")
-
-      console.log(error.message )
-
 
       response.status(500).json({ error: error.message })
     }
