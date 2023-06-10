@@ -11,7 +11,7 @@ test('renders content', () => {
     url: 'www.google.com'
   }
 
-  render(<Blog note={blog} />)
+  render(<Blog blog={blog} />)
 
   const element = screen.getByText('Test')
   expect(element).toBeDefined()
