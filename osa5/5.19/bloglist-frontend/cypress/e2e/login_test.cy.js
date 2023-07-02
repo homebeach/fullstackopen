@@ -38,5 +38,23 @@ describe('Blog ', function() {
       cy.get('.error').contains('wrong credentials')
     })
   })
-})
 
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.visit('http://localhost:3000')
+      cy.contains('log in').click()
+      cy.get('#username').type('testi')
+      cy.get('#password').type('testi')
+      cy.get('#login-button').click()
+    })
+
+    it('A blog can be created', function() {
+      cy.get('#new-blog').click()
+      cy.get('#title').type('testtitle')
+      cy.get('#author').type('testauthor')
+      cy.get('#url').type('testurl')
+      cy.get('#create-button').click()
+      cy.contains('testtitle').click()
+    })
+  })
+})
