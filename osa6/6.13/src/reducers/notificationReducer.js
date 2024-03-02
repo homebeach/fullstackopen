@@ -7,8 +7,17 @@ const notificationSlice = createSlice({
     setNotification: (state, action) => {
       return { ...state, notification: action.payload }; y
     },
+    clearNotification: (state) => {
+      // Clear notification immediately
+      if (state.notification && state.notification.timeoutId) {
+        clearTimeout(state.notification.timeoutId);
+      }
+
+      // Use Immer's draft syntax to directly modify the state
+      state.notification = null;
+    },
   },
 });
 
-export const { setNotification } = notificationSlice.actions;
+export const { setNotification, clearNotification } = notificationSlice.actions;
 export default notificationSlice.reducer;
