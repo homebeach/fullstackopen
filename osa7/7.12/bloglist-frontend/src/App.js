@@ -88,7 +88,10 @@ const App = () => {
 
   const updateBlog = async (blogObject) => {
     try {
-      await updateBlogMutation.mutateAsync(blogObject);
+      console.log("update blog");
+      console.log(blogObject);
+
+      await updateBlogMutation.mutate({ id: blogObject.id, newObject: blogObject });
       displayNoteWithTimeout(`A blog named ${blogObject.title} updated.`);
     } catch (error) {
       displayErrorWithTimeout("Failed to update the blog");

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import {  useGetAllBlogs, useCreateBlog, useUpdateBlog, useDeleteBlog } from "./services/blogs";
+import { useAuth } from "./AuthContext";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
@@ -11,6 +12,7 @@ import "./index.css";
 
 const App = () => {
   const blogFormRef = useRef();
+  const { user, setUser, clearUser } = useAuth();
 
   const { data: blogs, isError, error } = useGetAllBlogs();
   const createBlogMutation = useCreateBlog();
@@ -18,7 +20,6 @@ const App = () => {
   const deleteBlogMutation = useDeleteBlog();
 
   const [note, setNote] = useState("");
-  const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -68,7 +69,7 @@ const App = () => {
     try {
       blogService.setToken(null);
       window.localStorage.clear();
-      setUser(null);
+      clearUser();
       setUsername("");
       setPassword("");
     } catch (exception) {
@@ -88,7 +89,10 @@ const App = () => {
 
   const updateBlog = async (blogObject) => {
     try {
-      await updateBlogMutation.mutateAsync(blogObject);
+      console.log("update blog");
+      console.log(blogObject);
+
+      await updateBlogMutation.mutate({ id: blogObject.id, newObject: blogObject });
       displayNoteWithTimeout(`A blog named ${blogObject.title} updated.`);
     } catch (error) {
       displayErrorWithTimeout("Failed to update the blog");
