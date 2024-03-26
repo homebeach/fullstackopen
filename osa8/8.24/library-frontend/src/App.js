@@ -10,6 +10,7 @@ import Notify from './components/Notify'
 import { ALL_BOOKS, BOOK_ADDED } from './queries'
 
 export const updateCache = (cache, query, addedBook) => {
+  // helper that is used to eliminate saving same person twice
   const uniqByName = (a) => {
     let seen = new Set()
     return a.filter((item) => {
@@ -27,24 +28,12 @@ export const updateCache = (cache, query, addedBook) => {
 
 const App = () => {
   const [page, setPage] = useState('authors')
+  const [errorMessage, setErrorMessage] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false) // State to track login status
   const { loading, error, data } = useQuery(ALL_BOOKS);
 
-  // Once here, data should contain the fetched data
-  const [errorMessage, setErrorMessage] = useState(null)
-
   const client = useApolloClient()
 
-  useSubscription(BOOK_ADDED, {
-    onData: ({ data }) => {
-      const addedBook = data.data.bookAdded
-      notify(`${addedBook.name} added`)
-      updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
-
-    }
-  })
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
   const notify = (message) => {
     setErrorMessage(message)
     setTimeout(() => {
@@ -52,9 +41,18 @@ const App = () => {
     }, 10000)
   }
 
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      const addedBook = data.data.bookAdded
+      notify(`${addedBook.title} added`)
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
+    }
+  })
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   const handleLogout = () => {
-    // Perform logout actions here, such as removing the token from localStorage
     localStorage.removeItem('token');
     setIsLoggedIn(false); // Update login status to false
   }

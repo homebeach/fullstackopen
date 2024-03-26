@@ -27,12 +27,9 @@ const Login = ({ show, isLoggedIn, setIsLoggedIn }) => { // Receive isLoggedIn a
 
   const submit = async (event) => {
     event.preventDefault()
-    console.log("this is login")
 
     try {
       const { data } = await login({ variables: { username, password } })
-  
-      console.log(data)
       if (data && data.login && data.login.token) {
         localStorage.setItem('token', data.login.token);
         localStorage.setItem('favoriteGenre', data.login.favoriteGenre);
