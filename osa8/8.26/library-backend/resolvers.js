@@ -5,19 +5,6 @@ const User = require('./models/user'); // Assuming you have Book model defined i
 const { PubSub } = require('graphql-subscriptions')
 const pubsub = new PubSub()
 const jwt = require('jsonwebtoken')
-const DataLoader = require('dataloader')
-
-const bookCountLoader = new DataLoader(async (authorIds) => {
-  const bookCounts = await Book.aggregate([
-    { $match: { author: { $in: authorIds } } },
-    { $group: { _id: '$author', count: { $sum: 1 } } }
-  ]);
-  const countMap = bookCounts.reduce((acc, { _id, count }) => {
-    acc[_id.toString()] = count;
-    return acc;
-  }, {});
-  return authorIds.map(authorId => countMap[authorId.toString()] || 0);
-});
 
 const resolvers = {
     Query: {
@@ -73,7 +60,7 @@ const resolvers = {
     Author: {
       bookCount: async (parent) => {
         try {
-          return bookCountLoader.load(parent._id);
+          return await Book.countDocuments({ author: parent._id });
         } catch (error) {
           throw new GraphQLError('An error occurred while fetching book count for author');
         }
