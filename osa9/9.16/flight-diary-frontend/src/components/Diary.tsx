@@ -1,15 +1,31 @@
 // src/components/Diary.tsx
 import React, { useEffect, useState } from 'react';
 
-interface Diary {
+enum Weather {
+  Sunny = 'sunny',
+  Rainy = 'rainy',
+  Cloudy = 'cloudy',
+  Stormy = 'stormy',
+  Windy = 'windy',
+}
+
+enum Visibility {
+  Great = 'great',
+  Good = 'good',
+  Ok = 'ok',
+  Poor = 'poor',
+}
+
+interface DiaryEntry {
   id: number;
   date: string;
-  weather: string;
-  visibility: string;
+  weather: Weather;
+  visibility: Visibility;
+  comment: string;
 }
 
 const Diary: React.FC = () => {
-  const [diaries, setDiaries] = useState<Diary[]>([]);
+  const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
 
   useEffect(() => {
     fetchDiaries();
@@ -33,6 +49,7 @@ const Diary: React.FC = () => {
           <h2>Date: {diary.date}</h2>
           <p>Weather: {diary.weather}</p>
           <p>Visibility: {diary.visibility}</p>
+          <p>Comment: {diary.comment}</p>
         </div>
       ))}
     </div>
