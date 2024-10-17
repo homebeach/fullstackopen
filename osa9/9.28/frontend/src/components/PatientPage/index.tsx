@@ -16,6 +16,7 @@ import patientService from "../../services/patients";
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import EntryDetails from './EntryDetails';
+import axios from 'axios';  // Import AxiosError and axios
 
 const PatientPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -90,44 +91,54 @@ const PatientPage = () => {
   };
 
   const handleSubmit = async () => {
-    // Check for HealthCheckRating being greater than 3
-    if (isHealthCheckEntry(newEntry) && newEntry.healthCheckRating > 3) {
-      setErrorMessage("Health Check Rating cannot be greater than 3.");
-      setSuccessMessage(null);
-      setSnackbarOpen(true); // Open snackbar for error
-      return; // Stop the submission
+  // Check for HealthCheckRating being greater than 3
+  if (isHealthCheckEntry(newEntry) && newEntry.healthCheckRating > 3) {
+    setErrorMessage("Health Check Rating cannot be greater than 3.");
+    setSuccessMessage(null);
+    setSnackbarOpen(true); // Open snackbar for error
+    return; // Stop the submission
+  }
+
+  if (id && newEntry.description && newEntry.date && newEntry.specialist) {
+    try {
+      const addedEntry = await patientService.addEntry(id, newEntry);
+      const entryWithId: Entry = {
+        ...newEntry,
+        id: addedEntry.id
+      };
+
+      if (patient) {
+        setPatient({
+          ...patient,
+          entries: [...patient.entries, entryWithId]
+        });
+      }
+
+      setSuccessMessage("Entry added successfully!");
+      setErrorMessage(null);
+      setSnackbarOpen(true); // Open the snackbar
+
+      setNewEntry({
+        date: "",
+        description: "",
+        specialist: "",
+        type: "HealthCheck",
+        healthCheckRating: HealthCheckRating.Healthy,
+        diagnosisCodes: [],
+      });
     }
+    catch (error) {
+        console.error("Failed to add entry", error);
 
-    if (id && newEntry.description && newEntry.date && newEntry.specialist) {
-      try {
-        const addedEntry = await patientService.addEntry(id, newEntry);
-        const entryWithId: Entry = {
-          ...newEntry,
-          id: addedEntry.id
-        };
-
-        if (patient) {
-          setPatient({
-            ...patient,
-            entries: [...patient.entries, entryWithId]
-          });
+        // Check if error is an Axios error
+        if (axios.isAxiosError(error)) {
+          setErrorMessage("Failed to add entry: " + (error.response?.data?.error || "An unknown error occurred"));
+        } else if (error instanceof Error) {
+          setErrorMessage("Failed to add entry: " + error.message);
+        } else {
+          setErrorMessage("An unknown error occurred");
         }
 
-        setSuccessMessage("Entry added successfully!");
-        setErrorMessage(null);
-        setSnackbarOpen(true); // Open the snackbar
-
-        setNewEntry({
-          date: "",
-          description: "",
-          specialist: "",
-          type: "HealthCheck",
-          healthCheckRating: HealthCheckRating.Healthy,
-          diagnosisCodes: [],
-        });
-      } catch (error) {
-        console.error("Failed to add entry", error);
-        setErrorMessage("Failed to add entry: " + error.response?.data?.error || "An unknown error occurred");
         setSuccessMessage(null);
         setSnackbarOpen(true); // Open the snackbar on error
       }
