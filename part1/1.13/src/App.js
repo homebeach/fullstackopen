@@ -12,21 +12,21 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.',
     'The only way to go fast, is to go well.'
   ]
-  
+
   const [selected, setSelected] = useState(0)
-  const max = anecdotes.length - 1;
+  const max = anecdotes.length - 1
 
   const pointsArray = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 }
   const [points, setPoints] = useState(pointsArray)
 
   const vote = (selected) => () => {
-    const copy = { ...points };
-    copy[selected] += 1;
-    setPoints(copy);
-  };
+    const copy = { ...points }
+    copy[selected] += 1
+    setPoints(copy)
+  }
 
   return (
-    <div> 
+    <div>
       {anecdotes[selected]}
       <br/>
       has {points[selected]} votes

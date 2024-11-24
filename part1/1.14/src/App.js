@@ -9,30 +9,43 @@ const App = () => {
     'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
-    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-  
+
   const [selected, setSelected] = useState(0)
-  const max = anecdotes.length - 1;
+  const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
 
-  const pointsArray = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 }
-  const [points, setPoints] = useState(pointsArray)
+  const vote = () => {
+    const copy = [...points]
+    copy[selected] += 1
+    setPoints(copy)
+  }
 
-  const vote = (selected) => () => {
-    const copy = { ...points };
-    copy[selected] += 1;
-    setPoints(copy);
-  };
+  // Find the anecdote with the most votes
+  const maxVotes = Math.max(...points)
+  const maxVotesIndex = points.indexOf(maxVotes)
 
   return (
-    <div> 
+    <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <br/>
       has {points[selected]} votes
       <br/>
-      <Button onClick={vote(selected)}>Vote anecdote</Button>
-      <Button onClick={() => setSelected(Math.floor(Math.random() * max))}>Show random anecdote</Button>
+      <Button onClick={vote}>Vote</Button>
+      <Button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))}>Next anecdote</Button>
+
+      <h1>Anecdote with most votes</h1>
+      {maxVotes > 0 ? (
+        <>
+          {anecdotes[maxVotesIndex]}
+          <br/>
+          has {maxVotes} votes
+        </>
+      ) : (
+        <p>No votes yet</p>
+      )}
     </div>
   )
 }
