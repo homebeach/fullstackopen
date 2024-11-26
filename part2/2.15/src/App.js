@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react';
 import PersonForm from './PersonForm';
 import Numbers from './Numbers';
 import Filter from './Filter';
-import noteService from './services/notes'
+import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([]);
 
   const fetchData = () => {
-    noteService
+    personService
       .getAll()
       .then(response => {
         setPersons(response.data);
         setFilteredPersons(response.data);
       })
   };
-  
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -28,8 +28,8 @@ const App = () => {
 
     if (existingPerson) {
 
-      if (window.confirm(`${existingPerson.name} is already added to phonebook, replace the old phone number?`)) {        
-        noteService
+      if (window.confirm(`${existingPerson.name} is already added to phonebook, replace the old phone number?`)) {
+        personService
         .update(existingPerson.id, person)
         .then(response => {
           fetchData();
@@ -38,7 +38,7 @@ const App = () => {
 
     } else {
       const newPersons = [...persons, person];
-      noteService
+      personService
       .create(person)
       .then(response => {
         fetchData();
@@ -54,10 +54,10 @@ const App = () => {
     event.preventDefault(); // Prevents the form submission and page reload
 
     if (window.confirm(`Do you really want to delete '${name}'?`)) {
-      noteService
+      personService
       .remove(id)
       .then(response => {
-        noteService.getAll().then(updatedPersons => {
+        personService.getAll().then(updatedPersons => {
           fetchData();
         });
       });
@@ -69,7 +69,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter persons={persons} setFilteredPersons={setFilteredPersons} />
       <PersonForm addPerson={addPerson} isNameAlreadyExists={isNameAlreadyExists} />
-      <Numbers filteredPersons={filteredPersons} handleDeleteButtonClick={handleDeleteButtonClick}/> 
+      <Numbers filteredPersons={filteredPersons} handleDeleteButtonClick={handleDeleteButtonClick}/>
     </div>
   );
 };

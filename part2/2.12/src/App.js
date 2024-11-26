@@ -27,8 +27,7 @@ const App = () => {
       setPersons(newPersons);
       setFilteredPersons(newPersons);
 
-      axios
-      .post('http://localhost:3001/persons', person)
+      axios.post('http://localhost:3001/persons', person);
     }
   };
 
@@ -41,7 +40,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter persons={persons} setFilteredPersons={setFilteredPersons} />
       <PersonForm addPerson={addPerson} isNameAlreadyExists={isNameAlreadyExists} />
-      <Numbers filteredPersons={filteredPersons} /> 
+      <Numbers filteredPersons={filteredPersons} />
     </div>
   );
 };

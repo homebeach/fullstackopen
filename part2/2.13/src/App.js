@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PersonForm from './PersonForm';
 import Numbers from './Numbers';
 import Filter from './Filter';
-import axios from 'axios';
-import noteService from './services/notes'
+import personService from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
 
   useEffect(() => {
-    noteService
+    personService
       .getAll()
       .then(response => {
         setPersons(response.data);
@@ -24,7 +23,7 @@ const App = () => {
       alert(`${person.name} is already added to phonebook`);
     } else {
       const newPersons = [...persons, person];
-      noteService
+      personService
       .create(person)
       .then(response => {
         setPersons(newPersons);
@@ -42,7 +41,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter persons={persons} setFilteredPersons={setFilteredPersons} />
       <PersonForm addPerson={addPerson} isNameAlreadyExists={isNameAlreadyExists} />
-      <Numbers filteredPersons={filteredPersons} /> 
+      <Numbers filteredPersons={filteredPersons} />
     </div>
   );
 };
