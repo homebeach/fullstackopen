@@ -23,7 +23,7 @@ let persons = [
     id: 4,
     content: "Mary Poppendick",
     number: "39-23-6423122"
-  }  
+  }
 ];
 
 const isNameAlreadyExists = (name) => {
@@ -43,7 +43,7 @@ app.get('/api/persons', (req, res) => {
 app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   const person = persons.find(person => person.id === id)
-  
+
   if (person) {
     response.json(person)
   } else {
@@ -54,7 +54,7 @@ app.get('/api/persons/:id', (request, response) => {
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   const filteredPersons = persons.filter(person => person.id !== id);
-  
+
   if (persons.length > filteredPersons.length) {
     persons = filteredPersons;
     response.json(filteredPersons)
@@ -83,7 +83,6 @@ else {
   response.json(newPersons);
 }
 });
-
 
 app.get('/api/info', (req, res) => {
   const currentTime = new Date();

@@ -21,7 +21,7 @@ let persons = [
     id: 4,
     content: "Mary Poppendick",
     number: "39-23-6423122"
-  }  
+  }
 ];
 
 app.get('/', (req, res) => {
@@ -32,10 +32,10 @@ app.get('/api/persons', (req, res) => {
   res.json(persons);
 });
 
-app.delete('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  const person = persons.map(person => person.id !== id)
-  
+  const person = persons.find(person => person.id === id)
+
   if (person) {
     response.json(person)
   } else {
