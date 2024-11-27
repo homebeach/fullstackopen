@@ -1,13 +1,13 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import dotenv from 'dotenv'
+dotenv.config()
 
-import express from 'express';
-import morgan from 'morgan';
-import cors from 'cors';
+import express from 'express'
+import morgan from 'morgan'
+import cors from 'cors'
 
-import Person from './models/person.js';
+import Person from './models/person.js'
 
-const app = express();
+const app = express()
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -15,7 +15,7 @@ const requestLogger = (request, response, next) => {
   console.log('Body:  ', request.body)
   console.log('---')
   next()
-};
+}
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
@@ -33,11 +33,11 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
-app.use(express.json());
-app.use(cors());
-app.use(express.static('build'));
-app.use(morgan('tiny'));
-app.use(errorHandler);
+app.use(express.json())
+app.use(cors())
+app.use(express.static('build'))
+app.use(morgan('tiny'))
+app.use(errorHandler)
 
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
@@ -46,29 +46,29 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-  const body = request.body;
+  const body = request.body
 
   if (body.content === undefined) {
-    return response.status(400).json({ error: 'content missing' });
+    return response.status(400).json({ error: 'content missing' })
   }
 
   const person = new Person({
     content: body.content,
     number: body.number,
-  });
+  })
 
   person.validate()
     .then(() => person.save())
     .then(savedPerson => {
-      response.json(savedPerson);
+      response.json(savedPerson)
     })
     .catch(error => {
-      response.status(400).json({ error: error.message });
-    });
-});
+      response.status(400).json({ error: error.message })
+    })
+})
 
 app.get('/api/persons/:id', (request, response, next) => {
- 
+
   Person.findById(request.params.id)
     .then(person => {
       if (person) {
@@ -89,29 +89,29 @@ app.delete('/api/persons/:id', (request, response, next) => {
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-  const body = request.body;
+  const body = request.body
 
   const person = {
     content: body.content,
     number: body.number,
-  };
+  }
 
   Person.findByIdAndUpdate(request.params.id, person, { new: true, runValidators: true, context: 'query' })
     .then(updatedPerson => {
-      response.json(updatedPerson);
+      response.json(updatedPerson)
     })
-    .catch(error => next(error));
-});
+    .catch(error => next(error))
+})
 
 app.get('/api/info', (req, res, next) => {
   Person.countDocuments({})
     .then(count => {
-      const currentTime = new Date();
-      const response = `<p>Phonebook has info for ${count} people</p><p>${currentTime}</p>`;
-      res.send(response);
+      const currentTime = new Date()
+      const response = `<p>Phonebook has info for ${count} people</p><p>${currentTime}</p>`
+      res.send(response)
     })
-    .catch(error => next(error));
-});
+    .catch(error => next(error))
+})
 
 app.use(unknownEndpoint)
 app.use(errorHandler)
