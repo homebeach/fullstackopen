@@ -26,7 +26,7 @@ let persons = [
     id: 4,
     content: "Mary Poppendick",
     number: "39-23-6423122"
-  }  
+  }
 ];
 
   const isNameAlreadyExists = (content) => {
@@ -46,7 +46,7 @@ app.get('/api/persons', (req, res) => {
 app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   const person = persons.find(person => person.id === id)
-  
+
   if (person) {
     response.json(person)
   } else {
@@ -57,7 +57,7 @@ app.get('/api/persons/:id', (request, response) => {
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   const filteredPersons = persons.filter(person => person.id !== id);
-  
+
   if (persons.length > filteredPersons.length) {
     persons = filteredPersons;
     response.json(filteredPersons)
@@ -101,8 +101,8 @@ app.get('/api/info', (req, res) => {
   res.send(response);
 });
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
-})
+});
 

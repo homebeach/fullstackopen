@@ -23,11 +23,11 @@ const errorHandler = (error, request, response, next) => {
     return response.status(400).send({ error: 'malformatted id' })
   }
   next(error)
-}
+};
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
-}
+};
 
 app.use(express.json());
 app.use(cors());
@@ -39,7 +39,7 @@ app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
   })
-})
+});
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
@@ -56,11 +56,9 @@ app.post('/api/persons', (request, response) => {
   person.save().then(savedPerson => {
     response.json(savedPerson)
   })
-})
+});
 
 app.get('/api/persons/:id', (request, response, next) => {
- 
-  console.log("GET FUNCTION");
 
   Person.findById(request.params.id)
     .then(person => {
@@ -71,7 +69,7 @@ app.get('/api/persons/:id', (request, response, next) => {
       }
     })
     .catch(error => next(error))
-})
+});
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
@@ -79,14 +77,14 @@ app.delete('/api/persons/:id', (request, response, next) => {
       response.status(204).end()
     })
     .catch(error => next(error))
-})
+});
 
-app.use(unknownEndpoint)
-app.use(errorHandler)
+app.use(unknownEndpoint);
+app.use(errorHandler);
 
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
-})
+});
 
