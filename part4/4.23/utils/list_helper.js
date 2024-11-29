@@ -24,7 +24,7 @@ const mostBlogs = (blogs) => {
 
   const authorWithMostBlogs = loadash.maxBy(loadash.keys(authorBlogs), (author) => {
     return authorBlogs[author].length
-  });
+  })
 
   const result = {
     author: authorWithMostBlogs,

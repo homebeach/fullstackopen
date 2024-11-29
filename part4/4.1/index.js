@@ -1,11 +1,9 @@
-const http = require('http');
-const express = require('express');
-const app = express();
-const cors = require('cors');
-const mongoose = require('mongoose');
+const express = require('express')
+const app = express()
+const cors = require('cors')
+const mongoose = require('mongoose')
 
-const config = require('./utils/config');
-const logger = require('./utils/logger');
+const config = require('./utils/config')
 
 const MONGODB_URI = config.MONGODB_URI;
 const ENVPORT = config.PORT;

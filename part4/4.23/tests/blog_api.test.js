@@ -6,7 +6,6 @@ const api = supertest(app)
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
-
 let user
 let token
 
@@ -15,6 +14,15 @@ let initialBlogs = []
 beforeEach(async () => {
 
   user = await User.findOne({ blogs: { $exists: true, $ne: [] } })
+  await User.deleteMany({})
+  await Blog.deleteMany({})
+
+  user = new User({
+    username: 'testuser',
+    passwordHash: 'testhash', // Use a hashed password here
+  })
+
+  await user.save()
 
   initialBlogs = [
     {
@@ -43,15 +51,11 @@ beforeEach(async () => {
 
   token = jwt.sign(userForToken, process.env.SECRET)
 
-
   await Blog.deleteMany({})
   let blogObject = new Blog(initialBlogs[0])
   await blogObject.save()
   blogObject = new Blog(initialBlogs[1])
   await blogObject.save()
-
-
-
 })
 
 test('blogs are returned as json', async () => {
@@ -105,6 +109,35 @@ test('test adding blog entry', async () => {
     const addedBlog = blogs.find(blog => blog.title === 'Test')
 
     expect(addedBlog).toBeDefined()
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+test('adding a blog fails with 401 Unauthorized if token is not provided', async () => {
+  const blogEntry = {
+    title: 'Unauthorized Blog',
+    author: 'Unauthorized User',
+    url: 'https://unauthorized.com/',
+    likes: 5,
+    __v: 0
+  }
+
+  try {
+    await api
+      .post('/api/blogs')
+      .send(blogEntry)
+      .expect(401)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+    const blogs = response.body
+
+    // Ensure that the new blog has not been added
+    expect(blogs).toHaveLength(initialBlogs.length)
+
+    const unauthorizedBlog = blogs.find(blog => blog.title === 'Unauthorized Blog')
+    expect(unauthorizedBlog).toBeUndefined()
   } catch (error) {
     console.log(error)
   }
