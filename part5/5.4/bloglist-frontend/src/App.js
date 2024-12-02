@@ -13,9 +13,9 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  
+
   const [newBlog, setNewBlog] = useState('')
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
@@ -23,7 +23,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username, password,
@@ -99,7 +99,7 @@ const App = () => {
   }
 
   const handleLogout = async (event) => {
-    
+
     try {
       blogService.setToken(null)
       window.localStorage.clear()
@@ -133,28 +133,37 @@ const App = () => {
         />
       </div>
       <button type="submit">login</button>
-    </form>      
+    </form>
   )
 
   const blogForm = () => (
     <form onSubmit={addBlog}>
-      <input value={title} onChange={handleTitleChange} />
-      <input value={author} onChange={handleAuthorChange} />
-      <input value={url} onChange={handleUrlChange} />
-      <button type="submit">save</button>
-    </form>  
-  )
-  
+      <div>
+        <label>title:</label>
+        <input value={title} onChange={handleTitleChange} />
+      </div>
+      <div>
+        <label>author:</label>
+        <input value={author} onChange={handleAuthorChange} />
+      </div>
+      <div>
+        <label>url:</label>
+        <input value={url} onChange={handleUrlChange} />
+      </div>
+      <button type="submit">create</button>
+    </form>
+  );
+
 
   return (
     <div>
       {error}
-      {note} 
+      {note}
       <h2>blogs</h2>
-      
+
       <Notification message={errorMessage} />
 
-      {!user && loginForm()} 
+      {!user && loginForm()}
       {user && <div>
         <p>{user.name} logged in</p>
         <button onClick={handleLogout}>Logout</button>
@@ -163,8 +172,7 @@ const App = () => {
           <Blog key={blog.id} blog={blog} />
           )}
         </div>
-      } 
-
+      }
 
     </div>
   )

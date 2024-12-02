@@ -12,7 +12,7 @@ const App = () => {
   const [note, setNote] = useState("");
   const [error, setError] = useState("");
 
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
@@ -45,7 +45,7 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username, password,
@@ -66,7 +66,7 @@ const App = () => {
   }
 
   const handleLogout = async (event) => {
-    
+
     try {
       blogService.setToken(null)
       window.localStorage.clear()
@@ -100,7 +100,7 @@ const App = () => {
         />
       </div>
       <button type="submit">login</button>
-    </form>      
+    </form>
   )
 
   const createBlog = (blogObject) => {
@@ -126,12 +126,12 @@ const App = () => {
   return (
     <div>
       {error}
-      {note} 
+      {note}
       <h2>blogs</h2>
-      
+
       <Notification message={errorMessage} />
 
-      {!user && loginForm()} 
+      {!user && loginForm()}
       {user && <div>
         <p>{user.name} logged in</p>
         <button onClick={handleLogout}>Logout</button>
@@ -143,8 +143,7 @@ const App = () => {
           <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
           )}
         </div>
-      } 
-
+      }
 
     </div>
   )

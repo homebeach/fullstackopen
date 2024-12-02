@@ -84,19 +84,37 @@ describe('Blog ', function() {
       cy.contains('button', 'delete').first().click()
     })
 
-    it('A blog can only be deleted by creator', function() {
+    it('A blog can only be deleted by the creator', function() {
+      // Step 1: Creator logs in and creates a blog
       cy.get('#new-blog').click()
       cy.get('#title').type('testtitle')
       cy.get('#author').type('testauthor')
       cy.get('#url').type('testurl')
       cy.get('#create-button').click()
-      cy.contains('button', 'Logout').first().click()
+
+      // Verify the blog is created and the delete button is visible for the creator
+      cy.contains('testtitle')
+        .parent()
+        .find('[data-testid^="delete-button-"]') // Matches the delete button with a specific data-testid
+        .should('be.visible')
+
+      // Step 2: Creator logs out
+      cy.contains('button', 'Logout').click()
+
+      // Step 3: Another user logs in
       cy.contains('log in').click()
       cy.get('#username').type('testi2')
       cy.get('#password').type('testi2')
       cy.get('#login-button').click()
-      cy.contains('button', 'delete').first().click()
+
+      // Verify the delete button is not visible for the non-creator
       cy.contains('testtitle')
+        .parent()
+        .find('[data-testid^="delete-button-"]') // Matches the delete button
+        .should('not.exist')
+
+      // Verify the blog still exists
+      cy.contains('testtitle').should('exist')
     })
 
     it('Blogs are sorted based on number of likes', function() {
@@ -107,6 +125,7 @@ describe('Blog ', function() {
       cy.get('#create-button').click()
       cy.contains('button', 'view').first().click()
       cy.contains('button', 'like').first().click()
+      cy.contains('third').parent().should('contain', '1')
 
       cy.get('#title').clear()
       cy.get('#title').type('second')
@@ -121,6 +140,7 @@ describe('Blog ', function() {
       cy.get('.blog-container')
         .eq(1)
         .contains('button', 'like').click().click()
+      cy.contains('second').parent().should('contain', '2')
 
       cy.get('#title').clear()
       cy.get('#title').type('first')
@@ -135,6 +155,7 @@ describe('Blog ', function() {
       cy.get('.blog-container')
         .eq(2)
         .contains('button', 'like').click().click().click()
+      cy.contains('first').parent().should('contain', '3')
 
       cy.get('.blog-container')
         .eq(0)
@@ -147,6 +168,5 @@ describe('Blog ', function() {
         .contains('third')
 
     })
-
   })
 })

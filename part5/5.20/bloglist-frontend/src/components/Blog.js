@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import PropTypes from 'prop-types'
 import Togglable from './Togglable'
 
 const Blog = ({ blog, updateBlog }) => {
@@ -15,12 +16,16 @@ const Blog = ({ blog, updateBlog }) => {
   const handleLike = (event) => {
     event.preventDefault()
 
-    blog.likes = blog.likes + 1
-    updateBlog(blog)
+    const updatedBlog = {
+      ...blog,
+      likes: blog.likes + 1,
+    }
+
+    updateBlog(updatedBlog)
   }
 
   return (
-    <div style={blogStyle}>
+    <div className="blog-container" style={blogStyle}>
       <div>
         {blog.title}
       </div>
@@ -35,6 +40,19 @@ const Blog = ({ blog, updateBlog }) => {
       </Togglable>
     </div>
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    likes: PropTypes.number,
+    user: PropTypes.shape({
+      name: PropTypes.string
+    })
+  }).isRequired,
+  updateBlog: PropTypes.func
 }
 
 export default Blog

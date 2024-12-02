@@ -17,10 +17,6 @@ const blog = {
   user: blogUser
 }
 
-const updateBlog = (blogObject) => {
-
-}
-
 test('renders content', () => {
 
   render(<Blog blog={blog} />)
@@ -30,8 +26,6 @@ test('renders content', () => {
 })
 
 test('renders additional content', async () => {
-
-  const mockHandler = jest.fn()
 
   const user = userEvent.setup()
 
@@ -62,17 +56,17 @@ test('renders additional content', async () => {
 })
 
 test('pressing like', async () => {
-  const mockHandler = jest.fn();
-  const user = userEvent.setup();
-  render(<Blog blog={blog} updateBlog={mockHandler} />);
+  const mockHandler = jest.fn()
+  const user = userEvent.setup()
+  render(<Blog blog={blog} updateBlog={mockHandler} />)
 
-  const viewButton = screen.getByText('view');
-  await user.click(viewButton);
+  const viewButton = screen.getByText('view')
+  await user.click(viewButton)
 
-  const likeButton = screen.getByText('like');
-  await user.click(likeButton);
-  await user.click(likeButton);
+  const likeButton = screen.getByText('like')
+  await user.click(likeButton)
+  await user.click(likeButton)
 
-  expect(mockHandler.mock.calls).toHaveLength(2); 
+  expect(mockHandler.mock.calls).toHaveLength(2)
 
 })

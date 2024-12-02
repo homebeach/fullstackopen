@@ -89,13 +89,27 @@ const App = () => {
   }
 
   const updateBlog = (blogObject) => {
-
-    blogService.update(blogObject.id, blogObject).then(() => {
-
-      const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
-      setBlogs(sortedBlogs)
-      displayNoteWithTimeout(`A blog named ${blogObject.title} updated.`)
+    setBlogs((prevBlogs) => {
+      const updatedBlogs = prevBlogs.map((blog) =>
+        blog.id === blogObject.id ? blogObject : blog
+      )
+      return updatedBlogs.sort((a, b) => b.likes - a.likes)
     })
+
+    displayNoteWithTimeout(`A blog named ${blogObject.title} updated.`)
+
+    blogService.update(blogObject.id, blogObject)
+      .then((updatedBlogFromServer) => {
+        setBlogs((prevBlogs) => {
+          const updatedBlogs = prevBlogs.map((blog) =>
+            blog.id === updatedBlogFromServer.id ? updatedBlogFromServer : blog
+          )
+          return updatedBlogs.sort((a, b) => b.likes - a.likes)
+        })
+      })
+      .catch(() => {
+        displayErrorWithTimeout('Failed to update blog on the server.')
+      })
   }
 
   const blogFormRef = useRef()
@@ -132,9 +146,17 @@ const App = () => {
           <BlogForm createBlog={createBlog} user={user} />
         </Togglable>
         {blogs.map(blog => (
-          <div key={blog.id}>
+          <div key={blog.id} className="blog">
             <Blog blog={blog} updateBlog={updateBlog} />
-            <button onClick={() => handleDelete(blog)}>delete</button>
+            {user && blog.user && blog.user.username === user.username && (
+              <button
+                className="delete-button"
+                data-testid={`delete-button-${blog.id}`}
+                onClick={() => handleDelete(blog)}
+              >
+                delete
+              </button>
+            )}
           </div>
         ))}
       </div>

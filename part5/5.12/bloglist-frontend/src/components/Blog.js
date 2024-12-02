@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import PropTypes from 'prop-types'
 import Togglable from './Togglable'
 
 const Blog = ({ blog, updateBlog }) => {
@@ -10,17 +11,21 @@ const Blog = ({ blog, updateBlog }) => {
     marginBottom: 5
   }
 
-  const blogFormRef = useRef();
+  const blogFormRef = useRef()
 
   const handleLike = (event) => {
     event.preventDefault()
 
-    blog.likes = blog.likes + 1
-    updateBlog(blog)
+    const updatedBlog = {
+      ...blog,
+      likes: blog.likes + 1,
+    }
+
+    updateBlog(updatedBlog)
   }
 
   return (
-    <div style={blogStyle}>
+    <div className="blog-container" style={blogStyle}>
       <div>
         {blog.title}
       </div>
@@ -29,12 +34,25 @@ const Blog = ({ blog, updateBlog }) => {
         <div>
           {blog.author}<br/>
           {blog.url}<br/>
-          {blog.likes} <button onClick={handleLike}>like</button><br/>
+          {blog.likes} <button id="like" onClick={handleLike}>like</button><br/>
           {blog.user && blog.user.name}
         </div>
       </Togglable>
     </div>
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    likes: PropTypes.number,
+    user: PropTypes.shape({
+      name: PropTypes.string
+    })
+  }).isRequired,
+  updateBlog: PropTypes.func
 }
 
 export default Blog
