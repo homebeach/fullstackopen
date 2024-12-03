@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Button from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button'
 
 const App = () => {
   const [good, setGood] = useState(0)
