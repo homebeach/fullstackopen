@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const Numbers = ({ filteredPersons, handleDeleteButtonClick }) => {
 
@@ -8,12 +8,12 @@ const Numbers = ({ filteredPersons, handleDeleteButtonClick }) => {
       <ul>
         {Array.isArray(filteredPersons) && filteredPersons.map((person) => (
           <li key={person.id}>
-            {person.name} {person.number} <button type="submit" onClick={(event) => handleDeleteButtonClick(event, person.id, person.name)}> delete </button>    
+            {person.name} {person.number} <button type="submit" onClick={(event) => handleDeleteButtonClick(event, person.id, person.name)}> delete </button>
           </li>
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default Numbers;
+export default Numbers

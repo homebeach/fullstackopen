@@ -1,4 +1,4 @@
-import Course from './Course';
+import Course from './Course'
 
 const App = () => {
   const courses = [
@@ -27,7 +27,7 @@ const App = () => {
           id: 4
         }
       ]
-    }, 
+    },
     {
       name: 'Node.js',
       id: 2,
@@ -45,10 +45,10 @@ const App = () => {
       ]
     }
   ]
-  
+
   const listedcourses = courses?.map(course =>
        <Course name={course.name} parts={course.parts}/>
-    );
+    )
 
   return (
     <div>

@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 const PersonForm = ({ addPerson, isNameAlreadyExists }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [name, setName] = useState('')
+  const [number, setNumber] = useState('')
 
   const handleNameInputChange = (event) => {
-    setName(event.target.value);
-  };
+    setName(event.target.value)
+  }
 
   const handleNumberInputChange = (event) => {
-    setNumber(event.target.value);
-  };
+    setNumber(event.target.value)
+  }
 
   const handleAddButtonClick = (event) => {
-    event.preventDefault(); // Prevents the form submission and page reload
+    event.preventDefault() // Prevents the form submission and page reload
 
-    const person = { name, number };
-    addPerson(person);
-    setName('');
-    setNumber('');
-  };
+    const person = { name, number }
+    addPerson(person)
+    setName('')
+    setNumber('')
+  }
 
   return (
     <div>
@@ -32,11 +32,11 @@ const PersonForm = ({ addPerson, isNameAlreadyExists }) => {
         <div>
           <button type="submit" onClick={handleAddButtonClick}>
             add
-          </button>      
+          </button>
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default PersonForm;
+export default PersonForm

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const Numbers = ({ filteredPersons }) => {
 
@@ -13,7 +13,7 @@ const Numbers = ({ filteredPersons }) => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default Numbers;
+export default Numbers

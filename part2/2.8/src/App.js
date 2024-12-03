@@ -1,8 +1,8 @@
-import React from 'react';
-import { useState } from 'react';
+import React from 'react'
+import { useState } from 'react'
 
 const App = () => {
-  
+
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456' },
     { name: 'Ada Lovelace', number: '39-44-5323523' },
@@ -11,32 +11,32 @@ const App = () => {
   ])
 
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState("")
 
-  const [number, setNumber] = useState("");
+  const [number, setNumber] = useState("")
 
   function handleNameInputChange(event) {
-    setName(event.target.value);
+    setName(event.target.value)
   }
 
   function handleNumberInputChange(event) {
-    setNumber(event.target.value);
+    setNumber(event.target.value)
   }
 
   function handleButtonClick(event) {
 
-    event.preventDefault(); // Prevents the form submission and page reload
+    event.preventDefault() // Prevents the form submission and page reload
 
-    let person = {name, number};
+    let person = {name, number}
     if (isNameAlreadyExists(name)) {
-      alert(`${person.name} is already added to phonebook`);
+      alert(`${person.name} is already added to phonebook`)
     } else {
-      setPersons([...persons, person]);
+      setPersons([...persons, person])
     }
   }
 
   const isNameAlreadyExists = (name) => {
-    return persons.some((person) => person.name === name);
+    return persons.some((person) => person.name === name)
   }
 
   return (

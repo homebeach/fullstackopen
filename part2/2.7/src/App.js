@@ -3,28 +3,28 @@ import { useState } from 'react'
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas' }
-  ]) 
+  ])
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState("")
 
   function handleInputChange(event) {
-    setName(event.target.value);
+    setName(event.target.value)
   }
 
   function handleButtonClick(event) {
 
-    event.preventDefault(); // Prevents the form submission and page reload
+    event.preventDefault() // Prevents the form submission and page reload
 
-    let person = {name};
+    let person = {name}
     if (isNameAlreadyExists(name)) {
-      alert(`${person.name} is already added to phonebook`);
+      alert(`${person.name} is already added to phonebook`)
     } else {
-      setPersons([...persons, person]);
+      setPersons([...persons, person])
     }
   }
   const isNameAlreadyExists = (name) => {
-    return persons.some((person) => person.name === name);
-  };
+    return persons.some((person) => person.name === name)
+  }
 
   return (
     <div>

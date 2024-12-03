@@ -1,16 +1,16 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom'; // Import useHistory hook
+import React from 'react'
+import { useHistory } from 'react-router-dom' // Import useHistory hook
 
 const Countries = ({ countries }) => {
 
-  const history = useHistory(); // Initialize useHistory hook
+  const history = useHistory() // Initialize useHistory hook
 
     const handleShowButtonClick = (event, country) => {
-      event.preventDefault(); // Prevents the form submission and page reload
-      const lowercaseCountryName = country.name.common.toLowerCase();
-      history.push(`/country/${lowercaseCountryName}`); // Navigate to Country component with the selected country
+      event.preventDefault() // Prevents the form submission and page reload
+      const lowercaseCountryName = country.name.common.toLowerCase()
+      history.push(`/country/${lowercaseCountryName}`) // Navigate to Country component with the selected country
 
-    };
+    }
 
     return (
       <div>
@@ -23,8 +23,8 @@ const Countries = ({ countries }) => {
           ))}
         </ul>
       </div>
-    );
-    
-};
+    )
 
-export default Countries;
+}
+
+export default Countries

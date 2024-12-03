@@ -1,59 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
 
 const Country = () => {
-  const { countryName } = useParams();
-  const flagUrl = `https://www.countryflags.com/wp-content/uploads/${countryName}-flag-png-large.png`;
+  const { countryName } = useParams()
+  const flagUrl = `https://www.countryflags.com/wp-content/uploads/${countryName}-flag-png-large.png`
 
-  const baseUrl = 'https://restcountries.com/v3.1/name/';
-  const fields = 'name,capital,area,languages';
-  const url = `${baseUrl}${countryName}?fields=${fields}`;
+  const baseUrl = 'https://restcountries.com/v3.1/name/'
+  const fields = 'name,capital,area,languages'
+  const url = `${baseUrl}${countryName}?fields=${fields}`
 
 
-  const [weatherInfo, setWeatherInfo] = useState({});
+  const [weatherInfo, setWeatherInfo] = useState({})
 
   const [country, setCountry] = useState({
     name: { common: '' },
     capital: '',
     area: '',
     languages: {},
-  });
+  })
 
   useEffect(() => {
     axios
       .get(url)
       .then((response) => {
-        setCountry(response.data[0]);
+        setCountry(response.data[0])
       })
       .catch((error) => {
-        console.error(error);
-      });
-  }, [url]);
+        console.error(error)
+      })
+  }, [url])
 
-  const weatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + country.capital + "," + country.name.common + "&units=metric&appid=3ccc2416686687acca73e166671633a3";
+  const weatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + country.capital + "," + country.name.common + "&units=metric&appid=3ccc2416686687acca73e166671633a3"
 
   useEffect(() => {
     axios
       .get(weatherUrl)
       .then((response) => {
-        setWeatherInfo(response.data);
+        setWeatherInfo(response.data)
       })
       .catch((error) => {
-        console.error(error);
-      });
-  }, [weatherUrl]);
+        console.error(error)
+      })
+  }, [weatherUrl])
 
-  const weatherArray = weatherInfo.weather;
+  const weatherArray = weatherInfo.weather
 
-  let icon = "";
+  let icon = ""
   if (Array.isArray(weatherArray) && weatherArray.length > 0) {
-    icon = weatherArray[0]?.icon ?? "unknown"; // "03d"
+    icon = weatherArray[0]?.icon ?? "unknown" // "03d"
   }
-  
-  let iconUrl = "";
+
+  let iconUrl = ""
   if (icon !== "unknown") {
-    iconUrl = "https://openweathermap.org/img/wn/" + icon + "@2x.png";
+    iconUrl = "https://openweathermap.org/img/wn/" + icon + "@2x.png"
   }
   return (
     <div>
@@ -82,7 +82,7 @@ const Country = () => {
         </div>
       }
     </div>
-  );
-};
+  )
+}
 
-export default Country;
+export default Country

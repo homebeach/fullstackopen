@@ -1,14 +1,12 @@
-import React from 'react';
+import React from 'react'
 
 const Countries = ({ countries }) => {
   if(countries.length === 1) {
-    const country = countries[0];
+    const country = countries[0]
 
-    const countryName = country.name.common.toLowerCase();
+    const countryName = country.name.common.toLowerCase()
 
     const flagUrl = `https://www.countryflags.com/wp-content/uploads/${countryName}-flag-png-large.png"`
-
-    console.log(flagUrl);
 
     return (
       <div>
@@ -25,7 +23,7 @@ const Countries = ({ countries }) => {
         </ul>
         <img src={flagUrl} alt={`Flag of ${country.name.common}`} />
       </div>
-    );
+    )
   }
   else {
     return (
@@ -39,8 +37,8 @@ const Countries = ({ countries }) => {
           ))}
         </ul>
       </div>
-    );
-  }    
-};
+    )
+  }
+}
 
-export default Countries;
+export default Countries

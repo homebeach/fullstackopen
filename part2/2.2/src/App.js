@@ -1,16 +1,16 @@
 
 
 const Course = ({ name, parts }) => {
-  
+
   const newparts = parts?.map(part =>
     <li key={part.id}>
       {part.name} {part.exercises}
-    </li>);
+    </li>)
 
   let total = parts?.reduce(
     (accumulator, part) => accumulator + part.exercises,
     0
-  );
+  )
 
   return (
     <div>

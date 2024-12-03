@@ -1,16 +1,16 @@
 
 
 const Course = ({ name, parts }) => {
-  
+
   const listedparts = parts?.map(part =>
     <li key={part.id}>
       {part.name} {part.exercises}
-    </li>);
+    </li>)
 
   let total = parts?.reduce(
     (accumulator, part) => accumulator + part.exercises,
     0
-  );
+  )
 
   return (
     <div>
@@ -49,7 +49,7 @@ const App = () => {
           id: 4
         }
       ]
-    }, 
+    },
     {
       name: 'Node.js',
       id: 2,
@@ -67,10 +67,10 @@ const App = () => {
       ]
     }
   ]
-  
+
   const listedcourses = courses?.map(course =>
        <Course name={course.name} parts={course.parts}/>
-    );
+    )
 
   return (
     <div>

@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Filter from './Filter';
-import Countries from './Countries';
-import Country from './Country'; // Import Country component
-import './index.css';
+import React, { useState } from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import Filter from './Filter'
+import Countries from './Countries'
+import Country from './Country' // Import Country component
+import './index.css'
 
 const App = () => {
-  const [countries, setCountries] = useState([]);
-  const [note, setNote] = useState("");
+  const [countries, setCountries] = useState([])
+  const [note, setNote] = useState("")
 
   return (
     <Router>
@@ -20,7 +20,7 @@ const App = () => {
         </Switch>
       </div>
     </Router>
-  );
-};
+  )
+}
 
-export default App;
+export default App

@@ -1,39 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import PersonForm from './PersonForm';
-import Numbers from './Numbers';
-import Filter from './Filter';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react'
+import PersonForm from './PersonForm'
+import Numbers from './Numbers'
+import Filter from './Filter'
+import axios from 'axios'
 
 const App = () => {
-  const [persons, setPersons] = useState([]);
+  const [persons, setPersons] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
-        const result = await axios.get("http://localhost:3001/persons");
-        setPersons(result.data);
-        setFilteredPersons(result.data);
+        const result = await axios.get("http://localhost:3001/persons")
+        setPersons(result.data)
+        setFilteredPersons(result.data)
 
-    };
-    fetchData();
-  }, []);
+    }
+    fetchData()
+  }, [])
 
-  const [filteredPersons, setFilteredPersons] = useState(persons);
+  const [filteredPersons, setFilteredPersons] = useState(persons)
 
   const addPerson = (person) => {
     if (isNameAlreadyExists(person.name)) {
-      alert(`${person.name} is already added to phonebook`);
+      alert(`${person.name} is already added to phonebook`)
     } else {
-      const newPersons = [...persons, person];
-      setPersons(newPersons);
-      setFilteredPersons(newPersons);
+      const newPersons = [...persons, person]
+      setPersons(newPersons)
+      setFilteredPersons(newPersons)
 
-      axios.post('http://localhost:3001/persons', person);
+      axios.post('http://localhost:3001/persons', person)
     }
-  };
+  }
 
   const isNameAlreadyExists = (name) => {
-    return persons.some((person) => person.name === name);
-  };
+    return persons.some((person) => person.name === name)
+  }
 
   return (
     <div>
@@ -42,7 +42,7 @@ const App = () => {
       <PersonForm addPerson={addPerson} isNameAlreadyExists={isNameAlreadyExists} />
       <Numbers filteredPersons={filteredPersons} />
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

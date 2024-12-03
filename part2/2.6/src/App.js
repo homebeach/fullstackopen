@@ -3,17 +3,17 @@ import { useState } from 'react'
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas' }
-  ]) 
+  ])
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState("")
 
   function handleInputChange(event) {
-    setName(event.target.value);
+    setName(event.target.value)
   }
 
   function handleButtonClick() {
     let person = { name: {name} }
-    setPersons([...persons, person]);
+    setPersons([...persons, person])
   }
 
   return (
